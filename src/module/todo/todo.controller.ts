@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -15,7 +16,7 @@ import TodoService from './todo.service';
 import type { Request, Response } from 'express';
 import CreateTodoDto from './dto/create-todo.dto';
 import sendResponse from 'src/helpers/send-response';
-import type { ITodoParams } from './todo.interface';
+import type { ITodoFilter, ITodoParams } from './todo.interface';
 import UpdateTodoDto from './dto/update-todo.dto';
 import UserGuard from 'src/guard/user.guard';
 
@@ -37,8 +38,8 @@ class TodoController {
 
   @Get('/')
   @UseGuards(UserGuard)
-  async get(@Res() res: Response, @Req() req: Request) {
-    const response = await this.service.get(req.user);
+  async get(@Res() res: Response, @Req() req: Request, @Query() query: ITodoFilter) {
+    const response = await this.service.get(req.user, query);
 
     sendResponse(res, {
       status_code: HttpStatus.OK,

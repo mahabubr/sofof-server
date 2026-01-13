@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
 import CreateTodoDto from './dto/create-todo.dto';
 import IAuthUser from 'src/interface/auth-user.interface';
-import { ITodoParams } from './todo.interface';
+import { ITodoFilter, ITodoParams } from './todo.interface';
 import UpdateTodoDto from './dto/update-todo.dto';
 
 @Injectable()
@@ -19,11 +19,13 @@ class TodoService {
     return result;
   }
 
-  async get(user: IAuthUser) {
+  async get(user: IAuthUser, query: ITodoFilter) {
     const { id } = user;
 
+    const { status } = query;
+
     const result = await this.db.todo.findMany({
-      where: { user_id: id },
+      where: { user_id: id, ...(status && { status }) },
       orderBy: { updated_at: 'desc' },
     });
 

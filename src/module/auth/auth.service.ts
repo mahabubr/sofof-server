@@ -16,6 +16,12 @@ class AuthService {
 
     let existUser = await this.db.user.findUnique({ where: { email } });
 
+    if (existUser) {
+      const matchPassword = await bcrypt.compare(password, existUser.password);
+
+      if (!matchPassword) throw new Error('Password not matched.');
+    }
+
     if (!existUser) {
       const salt = +(process.env.SALT_ROUND as string);
 

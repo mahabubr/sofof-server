@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import DatabaseService from 'src/database/database.service';
+import DatabaseService from '../../database/database.service';
 import CreateTodoDto from './dto/create-todo.dto';
 import IAuthUser from 'src/interface/auth-user.interface';
 import { ITodoFilter, ITodoParams } from './todo.interface';
